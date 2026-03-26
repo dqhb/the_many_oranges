@@ -1,14 +1,14 @@
 const ORANGE_DB = {
-    happy:  { name: "Happy Orange", img: "orange_happy.png", desc: "Heal 10 Juice", action: "HEAL", val: 10 },
-    sad:    { name: "Sad Orange", img: "orange_sad.png", desc: "Weaken Opponent (50% Dmg)", action: "WEAKEN", val: 0.5 },
-    angry:  { name: "Angry Orange", img: "orange_angry.png", desc: "Deal 12 Damage", action: "ATTACK", val: 12 },
-    meh:    { name: "Meh Orange", img: "orange_meh.png", desc: "Skip 2 Turns -> ONE-TAP", action: "MEH", val: 0 },
-    sleepy: { name: "Sleepy Orange", img: "orange_sleepy.png", desc: "Heal 20 (Skip 1 Turn)", action: "REST", val: 20 },
-    rich:   { name: "Rich Orange", img: "orange_rich.png", desc: "Steal 5 Juice", action: "STEAL", val: 5 },
-    ghost:  { name: "Ghost Orange", img: "orange_ghost.png", desc: "Shield (1 Turn)", action: "SHIELD", val: 0 },
-    smart:  { name: "Smart Orange", img: "orange_smart.png", desc: "Reflect 5 Damage", action: "REFLECT", val: 5 },
-    chef:   { name: "Chef Orange", img: "orange_chef.png", desc: "Draw New Card", action: "DRAW", val: 0 },
-    chaos:  { name: "Chaos Orange", img: "orange_chaos.png", desc: "Random 1-20 Dmg", action: "CHAOS", val: 20 }
+    happy:  { name: "Happy Orange", img: "happyorange.png", desc: "Heal 10 Juice", action: "HEAL", val: 10 },
+    sad:    { name: "Sad Orange", img: "sadorange.png", desc: "Weaken Opponent (50% Dmg)", action: "WEAKEN", val: 0.5 },
+    angry:  { name: "Angry Orange", img: "angryorange.png", desc: "Deal 12 Damage", action: "ATTACK", val: 12 },
+    meh:    { name: "Meh Orange", img: "mehorange.png", desc: "Skip 2 Turns -> ONE-TAP", action: "MEH", val: 0 },
+    sleepy: { name: "Sleepy Orange", img: "sleepyorange.png", desc: "Heal 20 (Skip 1 Turn)", action: "REST", val: 20 },
+    rich:   { name: "Rich Orange", img: "richorange.png", desc: "Steal 5 Juice", action: "STEAL", val: 5 },
+    ghost:  { name: "Ghost Orange", img: "ghostorange.png", desc: "Shield (1 Turn)", action: "SHIELD", val: 0 },
+    smart:  { name: "Smart Orange", img: "smartorange.png", desc: "Reflect 5 Damage", action: "REFLECT", val: 5 },
+    chef:   { name: "Chef Orange", img: "cheforange.png", desc: "Draw New Card", action: "DRAW", val: 0 },
+    chaos:  { name: "Chaos Orange", img: "chaosorange.png", desc: "Random 1-20 Dmg", action: "CHAOS", val: 20 }
 };
 
 let peer, conn;
