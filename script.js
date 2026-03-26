@@ -1,45 +1,37 @@
 const ORANGE_DB = {
-    happy:  { name: "Happy Orange", img: "orange_happy.png", desc: "Heal 10 Juice", action: "HEAL", val: 10 },
-    sad:    { name: "Sad Orange", img: "orange_sad.png", desc: "Weaken Opponent (50% Dmg)", action: "WEAKEN", val: 0.5 },
-    angry:  { name: "Angry Orange", img: "orange_angry.png", desc: "Deal 12 Damage", action: "ATTACK", val: 12 },
-    meh:    { name: "Meh Orange", img: "orange_meh.png", desc: "Skip 2 Turns -> ONE-TAP", action: "MEH", val: 0 },
-    sleepy: { name: "Sleepy Orange", img: "orange_sleepy.png", desc: "Heal 20 (Skip 1 Turn)", action: "REST", val: 20 },
-    rich:   { name: "Rich Orange", img: "orange_rich.png", desc: "Steal 5 Juice", action: "STEAL", val: 5 },
-    ghost:  { name: "Ghost Orange", img: "orange_ghost.png", desc: "Shield (1 Turn)", action: "SHIELD", val: 0 },
-    smart:  { name: "Smart Orange", img: "orange_smart.png", desc: "Reflect 5 Damage", action: "REFLECT", val: 5 },
-    chef:   { name: "Chef Orange", img: "orange_chef.png", desc: "Draw New Card", action: "DRAW", val: 0 },
-    chaos:  { name: "Chaos Orange", img: "orange_chaos.png", desc: "Random 1-20 Dmg", action: "CHAOS", val: 20 }
+    happy:  { name: "Happy Orange", img: "happyorange.png", desc: "Heal 10 Juice", action: "HEAL", val: 10 },
+    sad:    { name: "Sad Orange", img: "sadorange.png", desc: "Weaken Opponent (50% Dmg)", action: "WEAKEN", val: 0.5 },
+    angry:  { name: "Angry Orange", img: "angryorange.png", desc: "Deal 12 Damage", action: "ATTACK", val: 12 },
+    meh:    { name: "Meh Orange", img: "mehorange.png", desc: "Skip 2 Turns -> ONE-TAP", action: "MEH", val: 0 },
+    sleepy: { name: "Sleepy Orange", img: "sleepyorange.png", desc: "Heal 20 (Skip 1 Turn)", action: "REST", val: 20 },
+    rich:   { name: "Rich Orange", img: "richorange.png", desc: "Steal 5 Juice", action: "STEAL", val: 5 },
+    ghost:  { name: "Ghost Orange", img: "ghostorange.png", desc: "Shield (1 Turn)", action: "SHIELD", val: 0 },
+    smart:  { name: "Smart Orange", img: "smartorange.png", desc: "Reflect 5 Damage", action: "REFLECT", val: 5 },
+    chef:   { name: "Chef Orange", img: "cheforange.png", desc: "Draw New Card", action: "DRAW", val: 0 },
+    chaos:  { name: "Chaos Orange", img: "chaosorange.png", desc: "Random 1-20 Dmg", action: "CHAOS", val: 20 }
 };
 
 let peer, conn;
 let myHP = 100, oppHP = 100;
 let myHand = [], isMyTurn = false, myPower = 1, mehCounter = 0;
 
-// Force secure Peer connection for GitHub
-function initPeer() {
-    return new Peer({
-        debug: 2,
-        config: { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] }
-    });
-}
-
 function createGame() {
-    peer = initPeer();
+    peer = new Peer();
     peer.on('open', id => {
-        document.getElementById('my-id-display').innerText = "Copy this ID: " + id;
+        document.getElementById('my-id-display').innerText = "YOUR ID: " + id;
+        document.getElementById('status-msg').innerText = "Waiting for opponent...";
     });
     peer.on('connection', c => {
         conn = c;
-        isMyTurn = true;
+        isMyTurn = true; 
         setupSocket();
     });
 }
 
 function joinGame() {
     const id = document.getElementById('join-id').value.trim();
-    if (!id) return alert("Please paste an ID!");
-    
-    peer = initPeer();
+    if (!id) return alert("Paste ID first!");
+    peer = new Peer();
     peer.on('open', () => {
         conn = peer.connect(id);
         setupSocket();
@@ -47,13 +39,25 @@ function joinGame() {
 }
 
 function setupSocket() {
+    // When the connection is actually established
     conn.on('open', () => {
         document.getElementById('lobby').style.display = 'none';
         document.getElementById('game-area').style.display = 'block';
         initDeck();
         render();
+        // Send a handshake to start the game on the other side
+        conn.send({ type: 'SYSTEM', msg: 'START' });
     });
-    conn.on('data', data => handleIncoming(data));
+
+    conn.on('data', data => {
+        if (data.type === 'SYSTEM' && data.msg === 'START') {
+            document.getElementById('lobby').style.display = 'none';
+            document.getElementById('game-area').style.display = 'block';
+            if (myHand.length === 0) initDeck();
+            render();
+        }
+        handleIncoming(data);
+    });
 }
 
 function initDeck() {
@@ -140,6 +144,6 @@ function swapHand() {
 }
 
 function checkWin() {
-    if(myHP <= 0) alert("JUICED");
-    if(oppHP <= 0) alert("VICTORY");
+    if(myHP <= 0) alert("YOU GOT JUICED!");
+    if(oppHP <= 0) alert("VICTORY! SQUEEZED 'EM!");
 }
